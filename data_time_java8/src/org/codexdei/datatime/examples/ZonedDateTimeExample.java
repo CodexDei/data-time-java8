@@ -3,18 +3,24 @@ package org.codexdei.datatime.examples;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ZonedDateTimeExample {
-
     public static void main(String[] args) {
 
-        LocalDateTime nowLocal = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+
+        LocalDateTime nowLocal = LocalDateTime.parse("2027/09/21 12:45", formatter);
         ZoneId newYork = ZoneId.of("America/New_York");
-        ZonedDateTime newYorkZone = ZonedDateTime.now(newYork);
-        System.out.println("Departure time from New York = " + newYorkZone);
+        ZonedDateTime newYorkZone = ZonedDateTime.of(nowLocal, newYork);
+
         ZoneId madrid = ZoneId.of("Europe/Madrid");
-        //se coloca plus para que teniendo en cuenta lo que demora el vuelo se genere la hora de llegada
         ZonedDateTime madridZone = newYorkZone.withZoneSameInstant(madrid).plusHours(8);
-        System.out.println("Arrival time to Madrid = " + madridZone);
+
+        // Aplicando formato al imprimir
+        System.out.println("Departure time from New York = " + newYorkZone.format(formatter));
+        System.out.println("Arrival time to Madrid = " + madridZone.format(formatter));
+
+        ZoneId.getAvailableZoneIds().forEach(System.out::println);
     }
 }
